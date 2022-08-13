@@ -3,7 +3,7 @@
 require_once 'vendor/autoload.php';
 
 /*
-Plugin Name: Monday-Clone Host
+Plugin Name: Monday-Clone Client
 Plugin URI: https://github.com/abduvik/wp-monday-clone
 Description: This plugin is used to handle secure communication between tenant and Storefront.
 Author: Abdu Tawfik

@@ -1,12 +1,12 @@
 <?php
 
-namespace WixCloneHost\Features;
+namespace MondayCloneHost\Features;
 
 use Exception;
 use WC_Order;
-use WixCloneHost\Core\EncryptionService;
-use WixCloneHost\Core\WPCSService;
-use WixCloneHost\Core\WPCSTenant;
+use MondayCloneHost\Core\EncryptionService;
+use MondayCloneHost\Core\WPCSService;
+use MondayCloneHost\Core\WPCSTenant;
 
 class TenantsSubscription
 {

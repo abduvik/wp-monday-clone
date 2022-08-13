@@ -1,8 +1,8 @@
 <?php
 
-namespace WixCloneHost\Features;
+namespace MondayCloneHost\Features;
 
-use WixCloneHost\Core\WPCSTenant;
+use MondayCloneHost\Core\WPCSTenant;
 
 class UiWcTenantsCheckout
 {

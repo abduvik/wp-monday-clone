@@ -1,28 +1,28 @@
 <?php
 
-use WixCloneHost\Api\SingleLogin;
-use WixCloneHost\Api\TenantsAuthKeys;
-use WixCloneHost\Core\EncryptionService;
-use WixCloneHost\Core\HttpService;
-use WixCloneHost\Core\WPCSService;
-use WixCloneHost\Features\TenantsSubscription;
-use WixCloneHost\Features\UiAccountSubscriptionsSettings;
-use WixCloneHost\Features\UiWcTenantsCheckout;
-use WixCloneHost\Features\UiWcWPCSProductVersions;
-use WixCloneHost\Features\UiWPCSAdminSettings;
+use MondayCloneHost\Api\SingleLogin;
+use MondayCloneHost\Api\TenantsAuthKeys;
+use MondayCloneHost\Core\EncryptionService;
+use MondayCloneHost\Core\HttpService;
+use MondayCloneHost\Core\WPCSService;
+use MondayCloneHost\Features\TenantsSubscription;
+use MondayCloneHost\Features\UiAccountSubscriptionsSettings;
+use MondayCloneHost\Features\UiWcTenantsCheckout;
+use MondayCloneHost\Features\UiWcWPCSProductVersions;
+use MondayCloneHost\Features\UiWPCSAdminSettings;
 
 require_once 'vendor/autoload.php';
 
 /**
- * @package WPCSWooSubscriptions
+ * @package MondayCloneHost
  * @version 1.0.0
  */
 /*
-Plugin Name: Wix-Clone Host
-Plugin URI: https://github.com/abduvik/wp-wix-clone
-Description: This plugin is used to create tenants on WPCS.io with support of WordPress, WooCommerce and Subscriptions for WooCommerce
+Plugin Name: Monday-Clone Host
+Plugin URI: https://github.com/abduvik/wp-monday-clone
+Description: This plugin is used to create tenants on WPCS.io with support of WordPress, WooCommerce, WooCommerce Subscriptions and Self-service Dashboard for WooCommerce Subscriptions
 Author: Abdu Tawfik
-Version: 1.0.1
+Version: 1.0.0
 Author URI: https://www.abdu.dev
 */
 

@@ -5,7 +5,7 @@ services:
     image: wordpress:6.0.0-php8.0
     restart: always
     ports:
-      - "80:80"
+      - "3000:80"
     environment:
       WORDPRESS_DB_HOST: db-host
       WORDPRESS_DB_USER: wp_db_user
@@ -15,6 +15,7 @@ services:
     volumes:
       - ./dist/host/plugins:/var/www/html/wp-content/plugins
       - ./dist/host/themes:/var/www/html/wp-content/themes
+      - ./packages/monday-host:/var/www/html/wp-content/plugins/monday-host
 
   wordpress-client:
     image: wordpress:6.0.0-php8.0
@@ -30,6 +31,7 @@ services:
     volumes:
       - ./dist/client/plugins:/var/www/html/wp-content/plugins
       - ./dist/client/themes:/var/www/html/wp-content/themes
+      - ./packages/monday-client:/var/www/html/wp-content/plugins/monday-client
 
   db-host:
     image: mysql:5.7

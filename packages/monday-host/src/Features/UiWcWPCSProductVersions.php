@@ -1,9 +1,9 @@
 <?php
 
-namespace WixCloneHost\Features;
+namespace MondayCloneHost\Features;
 
-use WixCloneHost\Core\WPCSService;
-use WixCloneHost\Core\WPCSTenant;
+use MondayCloneHost\Core\WPCSService;
+use MondayCloneHost\Core\WPCSTenant;
 
 class UiWcWPCSProductVersions
 {

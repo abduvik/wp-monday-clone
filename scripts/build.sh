@@ -1,18 +1,18 @@
 rm -rf build
 mkdir build
 
-cp -R packages/wix-host build/wix-host
-cp -R packages/wix-client build/wix-client
+cp -R packages/monday-host build/monday-host
+cp -R packages/monday-client build/monday-client
 
-rm -rf build/wix-host/vendor
-rm -rf build/wix-client/vendor
+rm -rf build/monday-host/vendor
+rm -rf build/monday-client/vendor
 
-(cd build/wix-host && composer install --no-dev)
-(cd build/wix-client && composer install --no-dev)
+(cd build/monday-host && composer install --no-dev)
+(cd build/monday-client && composer install --no-dev)
 
 
-(cd build && zip -r wix-host.zip wix-host)
-(cd build && zip -r wix-client.zip wix-client)
+(cd build && zip -r monday-host.zip monday-host)
+(cd build && zip -r monday-client.zip monday-client)
 
-rm -rf build/wix-host
-rm -rf build/wix-client
+rm -rf build/monday-host
+rm -rf build/monday-client

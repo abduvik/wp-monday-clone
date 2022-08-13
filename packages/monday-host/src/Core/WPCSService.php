@@ -1,6 +1,6 @@
 <?php
 
-namespace WixCloneHost\Core;
+namespace MondayCloneHost\Core;
 
 class WPCSService
 {

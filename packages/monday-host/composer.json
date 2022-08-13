@@ -1,10 +1,10 @@
 {
-  "name": "abduvik/wix-clone-host",
-  "description": "WordPress plugin to convert a WordPress installation to a Wix Clone website to allow selling WordPress website with subscriptions",
+  "name": "abduvik/monday-clone-host",
+  "description": "This plugin is used to create tenants on WPCS.io with support of WordPress, WooCommerce, WooCommerce Subscriptions and Self-service Dashboard for WooCommerce Subscriptions",
   "type": "project",
   "autoload": {
     "psr-4": {
-      "WixCloneHost\\": "src/"
+      "MondayCloneHost\\": "src/"
     }
   },
   "autoload-dev": {

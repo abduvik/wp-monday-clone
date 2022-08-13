@@ -1,6 +1,6 @@
 <?php
 
-namespace WixCloneHost\Features;
+namespace MondayCloneHost\Features;
 
 class UiWPCSAdminSettings
 {

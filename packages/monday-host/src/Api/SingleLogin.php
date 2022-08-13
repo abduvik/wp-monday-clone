@@ -1,10 +1,10 @@
 <?php
 
-namespace WixCloneHost\Api;
+namespace MondayCloneHost\Api;
 
 use WC_Order;
-use WixCloneHost\Core\EncryptionService;
-use WixCloneHost\Core\WPCSTenant;
+use MondayCloneHost\Core\EncryptionService;
+use MondayCloneHost\Core\WPCSTenant;
 use WP_REST_Request;
 
 class SingleLogin

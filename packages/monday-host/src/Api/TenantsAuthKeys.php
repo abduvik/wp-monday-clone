@@ -1,9 +1,9 @@
 <?php
 
-namespace WixCloneHost\Api;
+namespace MondayCloneHost\Api;
 
 use Exception;
-use WixCloneHost\Core\WPCSTenant;
+use MondayCloneHost\Core\WPCSTenant;
 use WP_Error;
 use WP_REST_Request;
 
