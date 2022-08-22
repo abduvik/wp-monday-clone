@@ -7,7 +7,7 @@ use MondayCloneClient\Core\DecryptionService;
 use WP_Error;
 use WP_REST_Request;
 
-class SingleLogin
+class SingleSignOnController
 {
     private static string $NAMESPACE = 'wpcs/v1';
 

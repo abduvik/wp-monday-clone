@@ -2,7 +2,7 @@
 
 namespace MondayCloneClient\Features;
 
-class UiWPCSAdminTenantSettings
+class AdminTenantSettings
 {
     public function __construct()
     {

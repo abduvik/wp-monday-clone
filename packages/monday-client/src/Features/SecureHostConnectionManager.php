@@ -4,7 +4,7 @@ namespace MondayCloneClient\Features;
 
 use MondayCloneClient\Core\HttpService;
 
-class SecureHostConnection
+class SecureHostConnectionManager
 {
     public const TENANT_PUBLIC_KEY = 'TENANT_PUBLIC_KEY';
 

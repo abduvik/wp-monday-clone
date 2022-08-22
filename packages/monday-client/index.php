@@ -11,19 +11,32 @@ Version: 1.0.1
 Author URI: https://www.abdu.dev
 */
 
-use MondayCloneClient\Api\SingleLogin;
+use MondayCloneClient\Api\SingleSignOnController;
 use MondayCloneClient\Core\DecryptionService;
 use MondayCloneClient\Core\HttpService;
-use MondayCloneClient\Features\SecureHostConnection;
-use MondayCloneClient\Features\UiWPCSAdminTenantSettings;
+use MondayCloneClient\Features\AdminRolesSettings;
+use MondayCloneClient\Features\AdminSettings;
+use MondayCloneClient\Features\RolesManager;
+use MondayCloneClient\Features\SecureHostConnectionManager;
+use MondayCloneClient\Features\AdminTenantSettings;
+
+
+const PLUGIN_VERSION = '1.0.0';
+define("PLUGIN_DIR_URI", plugin_dir_url(__FILE__));
+define("PLUGIN_DIR", plugin_dir_path(__FILE__));
 
 define('MONDAY_MAIN_HOST_URL', get_option('monday_host_website_url'));
 define('MONDAY_HOST_PUBLIC_KEYS', get_option('tenant_public_key'));
 
-
+// Controllers to list for APIs
 $httpService = new HttpService(MONDAY_MAIN_HOST_URL . '/wp-json/wpcs');
-new SecureHostConnection($httpService);
-
 $decryptionService = new DecryptionService();
-new SingleLogin($decryptionService);
-new UiWPCSAdminTenantSettings();
+new SingleSignOnController($decryptionService);
+
+// Managers to list for Events
+new SecureHostConnectionManager($httpService);
+new RolesManager();
+
+// UI
+new AdminTenantSettings();
+new AdminRolesSettings();
