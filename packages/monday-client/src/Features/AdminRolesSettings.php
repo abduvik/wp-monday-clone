@@ -2,8 +2,6 @@
 
 namespace MondayCloneClient\Features;
 
-use function PHPUnit\Framework\fileExists;
-
 class AdminRolesSettings
 {
     const ROLES_FILE_PATH = PLUGIN_DIR . 'data/roles.json';
@@ -37,9 +35,11 @@ class AdminRolesSettings
 
     public function render_roles_page()
     {
-        global $wp_roles;
-        $wp_roles = $wp_roles->roles;
         $wp_plugins = get_plugins();
+        $this->ensure_roles_file_exists();
+
+        $roles = json_decode(file_get_contents(self::ROLES_FILE_PATH), true);
+
         ?>
         <h1>Roles</h1>
 
@@ -56,14 +56,15 @@ class AdminRolesSettings
             <input type="hidden" name="action" value="save_roles">
 
             <div class="wpcs roles-container">
-                <?php foreach ($wp_roles as $role_name => $role): ?>
+                <?php foreach ($roles as $role_name => $role_data): ?>
                     <div id='wpcs-role-<?= $role_name ?>' class='wpcs single-role-container'>
                         <input type='hidden' name='delete_roles[<?= $role_name ?>]' value="0"/>
-                        <h2><?= $role['name'] ?></h2>
+                        <h2><?= $role_data['title'] ?></h2>
                         <ul>
                             <?php foreach ($wp_plugins as $plugin_name => $plugin) : ?>
                                 <li>
                                     <input
+                                        <?= in_array($plugin_name, $role_data['plugins']) ? 'checked' : '' ?>
                                             type='checkbox'
                                             name='roles[<?= $role_name ?>][<?= $plugin_name ?>]'/>
                                     <?= $plugin['Name'] ?>
@@ -84,54 +85,71 @@ class AdminRolesSettings
         <?php
     }
 
-    public function add_new_role()
+    private function ensure_roles_file_exists(): void
     {
-        if (!wp_verify_nonce($_POST['add_new_role_nonce'], 'monday_add_new_role')) return;
-
-        $data = [];
-
         if (!file_exists(PLUGIN_DIR . 'data')) {
             mkdir(PLUGIN_DIR . 'data', 0755, true);
         }
 
-        if (fileExists(PLUGIN_DIR . 'data/roles.json')) {
-
+        if (!file_exists(self::ROLES_FILE_PATH)) {
+            file_put_contents(self::ROLES_FILE_PATH, "{}");
         }
+    }
 
-        // Check if role exists
+    public function add_new_role()
+    {
+        if (!wp_verify_nonce($_POST['add_new_role_nonce'], 'monday_add_new_role')) return;
 
-        $data[] = [
-            'role' => sanitize_text_field($_POST['role']),
+        $this->ensure_roles_file_exists();
+        $data = json_decode(file_get_contents(self::ROLES_FILE_PATH), true);
+
+        $new_role_name = sanitize_text_field($_POST['role']);
+        $role_slug = sanitize_title_with_dashes($new_role_name);
+        $data[$role_slug] = [
+            'title' => $new_role_name,
             'plugins' => []
         ];
 
         $encoded_data = json_encode($data);
-
         file_put_contents(self::ROLES_FILE_PATH, $encoded_data);
 
-        echo '<pre>';
-        print_r($encoded_data);
-        echo '</pre>';
-
-        exit();
+        wp_redirect(wp_get_referer());
     }
 
     public function save_roles()
     {
         if (!wp_verify_nonce($_POST['save_roles_nonce'], 'save_roles')) return;
+        if (!isset($_POST['roles'])) wp_redirect(wp_get_referer());
+
+        $this->ensure_roles_file_exists();
+
+        $data = json_decode(file_get_contents(self::ROLES_FILE_PATH), true);
+
+        $roles_plugins = $_POST['roles'];
 
 
-//        if (fileExists(PLUGIN_DIR . 'data/roles.json')) {
-//        }
+        // Remove deleted roles
+        $deleted_roles = array_keys(array_filter($_POST['delete_roles'], fn($item) => $item === "1"));
+        foreach ($deleted_roles as $role) {
+            unset($data[$role]);
+            unset($roles_plugins[$role]);
+        }
 
-//        echo PLUGIN_DIR;
+        // Set new rules
+        foreach ($roles_plugins as $role_slug => $plugins) {
+            $activated_plugins_files = array_keys($plugins);
+            $filtered_activated_plugins_files = array_filter($activated_plugins_files, function ($plugin_file) {
+                return file_exists(WP_PLUGIN_DIR . '/' . $plugin_file);
+            });
+            $data[$role_slug] = [
+                'title' => $data[$role_slug]['title'],
+                'plugins' => $filtered_activated_plugins_files
+            ];
+        }
 
-//        $role_file_content =
-//
-        echo '<pre>';
-        print_r($_POST);
-        echo '</pre>';
+        $encoded_data = json_encode($data);
+        file_put_contents(self::ROLES_FILE_PATH, $encoded_data);
 
-//        exit();
+        wp_redirect(wp_get_referer());
     }
 }
