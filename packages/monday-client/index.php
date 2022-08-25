@@ -1,6 +1,7 @@
 <?php
 
 require_once 'vendor/autoload.php';
+require_once(ABSPATH . '/wp-admin/includes/plugin.php');
 
 /*
 Plugin Name: Monday-Clone Client
@@ -15,6 +16,7 @@ use MondayCloneClient\Api\SingleSignOnController;
 use MondayCloneClient\Core\DecryptionService;
 use MondayCloneClient\Core\HttpService;
 use MondayCloneClient\Features\AdminRolesSettings;
+use MondayCloneClient\Features\PluginBootstrap;
 use MondayCloneClient\Features\RolesManager;
 use MondayCloneClient\Features\SecureHostConnectionManager;
 use MondayCloneClient\Features\AdminTenantSettings;
@@ -26,6 +28,9 @@ define("PLUGIN_DIR", plugin_dir_path(__FILE__));
 
 define('MONDAY_MAIN_HOST_URL', get_option('monday_host_website_url'));
 define('MONDAY_HOST_PUBLIC_KEYS', get_option('tenant_public_key'));
+
+// Plugin Boostrap
+new PluginBootstrap();
 
 // Controllers to list for APIs
 $httpService = new HttpService(MONDAY_MAIN_HOST_URL . '/wp-json/wpcs');
