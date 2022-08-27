@@ -2,12 +2,18 @@
 
 namespace MondayCloneClient\Features;
 
+use MondayCloneClient\Core\HttpService;
+
 class AdminRolesSettings
 {
     const ROLES_FILE_PATH = PLUGIN_DIR . 'data/roles.json';
 
-    public function __construct()
+    private HttpService $host_http_service;
+
+    public function __construct(HttpService $host_http_service)
     {
+        $this->host_http_service = $host_http_service;
+
         add_action('admin_menu', [$this, 'add_roles_page'], 11);
         add_action('admin_enqueue_scripts', [$this, 'add_admin_settings_styles']);
         add_action('admin_post_monday_add_new_role', [$this, 'add_new_role'], 10, 3);
@@ -35,7 +41,7 @@ class AdminRolesSettings
 
     public function render_roles_page()
     {
-        $wp_plugins = get_plugins();
+        $wp_plugins = array_filter(get_plugins(), fn($item) => $item !== PLUGIN_NAME);
         $this->ensure_roles_file_exists();
 
         $roles = json_decode(file_get_contents(self::ROLES_FILE_PATH), true);
@@ -113,7 +119,18 @@ class AdminRolesSettings
         $encoded_data = json_encode($data);
         file_put_contents(self::ROLES_FILE_PATH, $encoded_data);
 
+        $this->update_host_roles();
+
         wp_redirect(wp_get_referer());
+    }
+
+    private function update_host_roles()
+    {
+        try {
+            $this->host_http_service->get('/v1/user-role-plan/update');
+        } catch (\Exception $exception) {
+
+        }
     }
 
     public function save_roles()
@@ -149,6 +166,8 @@ class AdminRolesSettings
 
         $encoded_data = json_encode($data);
         file_put_contents(self::ROLES_FILE_PATH, $encoded_data);
+
+        $this->update_host_roles();
 
         wp_redirect(wp_get_referer());
     }

@@ -8,8 +8,6 @@ use WP_REST_Request;
 
 class SingleSignOnController
 {
-    private static string $NAMESPACE = 'wpcs/v1';
-
     private DecryptionService $decryptionService;
 
     public function __construct(DecryptionService $decryptionService)
@@ -21,7 +19,7 @@ class SingleSignOnController
 
     public function register_rest_routes()
     {
-        register_rest_route(static::$NAMESPACE, '/single_login/verify', array(
+        register_rest_route(API_V1_NAMESPACE, '/single_login/verify', array(
             'methods' => 'GET',
             'callback' => [$this, 'verify_single_login'],
         ));

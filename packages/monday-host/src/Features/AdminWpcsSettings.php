@@ -2,7 +2,7 @@
 
 namespace MondayCloneHost\Features;
 
-class UiWPCSAdminSettings
+class AdminWpcsSettings
 {
     public function __construct()
     {

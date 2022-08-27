@@ -23,6 +23,9 @@ use MondayCloneClient\Features\AdminTenantSettings;
 
 
 const PLUGIN_VERSION = '1.0.0';
+const API_V1_NAMESPACE = 'monday-client/v1';
+const PLUGIN_NAME = 'monday-client/index.php';
+
 define("PLUGIN_DIR_URI", plugin_dir_url(__FILE__));
 define("PLUGIN_DIR", plugin_dir_path(__FILE__));
 
@@ -33,14 +36,14 @@ define('MONDAY_HOST_PUBLIC_KEYS', get_option('tenant_public_key'));
 new PluginBootstrap();
 
 // Controllers to list for APIs
-$httpService = new HttpService(MONDAY_MAIN_HOST_URL . '/wp-json/wpcs');
+$host_http_service = new HttpService(MONDAY_MAIN_HOST_URL . '/wp-json/monday-host');
 $decryptionService = new DecryptionService();
 new SingleSignOnController($decryptionService);
 
 // Managers to list for Events
-new SecureHostConnectionManager($httpService);
+new SecureHostConnectionManager($host_http_service);
 new RolesManager();
 
 // UI
 new AdminTenantSettings();
-new AdminRolesSettings();
+new AdminRolesSettings($host_http_service);

@@ -20,6 +20,7 @@ class TenantsAuthKeys
     {
         register_rest_route(static::$NAMESPACE, '/tenant/public_keys', array(
             'methods' => 'GET',
+            'permission_callback' => '__return_true',
             'callback' => [$this, 'get_tenant_public_key'],
         ));
     }
