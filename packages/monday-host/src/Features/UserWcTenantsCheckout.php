@@ -4,7 +4,7 @@ namespace MondayCloneHost\Features;
 
 use MondayCloneHost\Core\WPCSTenant;
 
-class UiWcTenantsCheckout
+class UserWcTenantsCheckout
 {
     public function __construct()
     {

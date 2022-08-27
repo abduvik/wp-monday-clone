@@ -6,9 +6,10 @@ use MondayCloneHost\Api\TenantsAuthKeys;
 use MondayCloneHost\Core\EncryptionService;
 use MondayCloneHost\Core\HttpService;
 use MondayCloneHost\Core\WPCSService;
-use MondayCloneHost\Features\TenantsSubscription;
-use MondayCloneHost\Features\UiAccountSubscriptionsSettings;
-use MondayCloneHost\Features\UiWcTenantsCheckout;
+use MondayCloneHost\Features\PluginBootstrap;
+use MondayCloneHost\Features\TenantsSubscriptionManger;
+use MondayCloneHost\Features\UserAccountSubscriptionsSettings;
+use MondayCloneHost\Features\UserWcTenantsCheckout;
 use MondayCloneHost\Features\AdminWcProductRole;
 use MondayCloneHost\Features\AdminWpcsSettings;
 
@@ -47,8 +48,11 @@ new RolesController();
 // UI
 new TenantsAuthKeys();
 new SingleLogin($encryptionService);
-new TenantsSubscription($wpcsService, $encryptionService);
+new TenantsSubscriptionManger($wpcsService, $encryptionService);
 new AdminWpcsSettings();
-new UiAccountSubscriptionsSettings($wpcsService);
+new UserAccountSubscriptionsSettings($wpcsService);
 new AdminWcProductRole();
-new UiWcTenantsCheckout();
+new UserWcTenantsCheckout();
+
+// Plugin Bootstrap
+new PluginBootstrap();

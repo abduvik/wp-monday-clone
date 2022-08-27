@@ -7,7 +7,7 @@ use WC_Order;
 use MondayCloneHost\Core\WPCSService;
 use MondayCloneHost\Core\WPCSTenant;
 
-class UiAccountSubscriptionsSettings
+class UserAccountSubscriptionsSettings
 {
     private WPCSService $wpcsService;
 
@@ -15,26 +15,25 @@ class UiAccountSubscriptionsSettings
     {
         $this->wpcsService = $wpcsService;
 
-        add_action('wps_sfw_subscription_details_html', [$this, 'render_single_login'], 1, 25);
-        add_action('wps_sfw_subscription_details_html', [$this, 'render_edit_domain'], 1, 30);
+        add_action('woocommerce_subscription_details_table', [$this, 'render_single_login'], 1, 25);
+        add_action('woocommerce_subscription_details_table', [$this, 'render_edit_domain'], 1, 30);
         add_action('remove_tenant_old_domain', [$this, 'remove_tenant_old_domain'], 1, 2);
     }
 
-    public function render_single_login($subscription_id)
+    public function render_single_login(\WC_Subscription $subscription)
     {
-        $get_order_id = get_post_meta($subscription_id, 'wps_parent_order', true);
-        $order = new WC_Order($get_order_id);
+        $order = $subscription->get_parent();
         $email = $order->get_billing_email();
-        $loginLink = '/wp-json/wpcs/v1/tenant/single_login?subscription_id=' . $subscription_id . '&email=' . $email;
+        $loginLink = '/wp-json/wpcs/v1/tenant/single_login?subscription_id=' . $subscription->get_id() . '&email=' . $email;
 
         echo "<a href='$loginLink' target='_blank' class='button'>Login as: $email <span class='dashicons dashicons-admin-network'></span></a>";
     }
 
-    public function render_edit_domain($subscription_id)
+    public function render_edit_domain(\WC_Subscription $subscription)
     {
-        $this->handle_update_subscription_domain($subscription_id);
-        $domain_name = get_post_meta($subscription_id, WPCSTenant::WPCS_DOMAIN_NAME_META, true);
-        $base_domain_name = get_post_meta($subscription_id, WPCSTenant::WPCS_BASE_DOMAIN_NAME_META, true);
+        $this->handle_update_subscription_domain($subscription);
+        $domain_name = get_post_meta($subscription->get_id(), WPCSTenant::WPCS_DOMAIN_NAME_META, true);
+        $base_domain_name = get_post_meta($subscription->get_id(), WPCSTenant::WPCS_BASE_DOMAIN_NAME_META, true);
 
         $domain_name = $domain_name ?: $base_domain_name;
 
@@ -58,14 +57,18 @@ class UiAccountSubscriptionsSettings
         echo '<h4>Website Status</h4>';
     }
 
-    public function handle_update_subscription_domain($subscription_id)
+    public function handle_update_subscription_domain(\WC_Subscription $subscription)
     {
+        if (!isset($_POST['domain_name'])) {
+            return;
+        }
+
         $domain = sanitize_text_field($_POST['domain_name']);
 
-        $tenant_external_id = get_post_meta($subscription_id, WPCSTenant::WPCS_TENANT_EXTERNAL_ID_META, true);
-        $tenant_current_domain_name = get_post_meta($subscription_id, WPCSTenant::WPCS_DOMAIN_NAME_META, true);
+        $tenant_external_id = get_post_meta($subscription->get_id(), WPCSTenant::WPCS_TENANT_EXTERNAL_ID_META, true);
+        $tenant_current_domain_name = get_post_meta($subscription->get_id(), WPCSTenant::WPCS_DOMAIN_NAME_META, true);
 
-        if (!isset($_POST['domain_name']) || $_POST['domain_name'] === $tenant_current_domain_name) {
+        if ($_POST['domain_name'] === $tenant_current_domain_name) {
             return;
         }
 
@@ -75,7 +78,7 @@ class UiAccountSubscriptionsSettings
                 'domain_name' => $domain,
             ]);
 
-            update_post_meta($subscription_id, WPCSTenant::WPCS_DOMAIN_NAME_META, $domain);
+            update_post_meta($subscription->get_id(), WPCSTenant::WPCS_DOMAIN_NAME_META, $domain);
 
             if ($tenant_current_domain_name) {
                 wp_schedule_single_event(time() + 300, 'remove_tenant_old_domain', [$tenant_external_id, $tenant_current_domain_name]);

@@ -11,11 +11,6 @@ class WPCSService
         $this->httpService = $httpService;
     }
 
-    public function get_available_product_versions()
-    {
-        return $this->httpService->get('/v1/versions');
-    }
-
     public function create_tenant($args)
     {
         $payload = [
