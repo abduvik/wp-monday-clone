@@ -41,7 +41,12 @@ class RolesController
         try {
             $wpcs_production_version = $this->wpcsService->get_production_version();
 
-            $http_service = new HttpService($wpcs_production_version->domain);
+            $wpcs_production_version_domain_name = $wpcs_production_version->domain;
+            if (strpos($wpcs_production_version_domain_name, 'http') !== 0) {
+                $wpcs_production_version_domain_name = 'https://' . $wpcs_production_version_domain_name;
+            }
+
+            $http_service = new HttpService($wpcs_production_version_domain_name);
 
             $response = $http_service->get('/wp-content/plugins/monday-client/data/roles.json');
 
