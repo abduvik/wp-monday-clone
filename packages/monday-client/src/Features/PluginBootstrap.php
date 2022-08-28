@@ -6,6 +6,9 @@ class PluginBootstrap
 {
     const TENANT_ROLES = 'WPCS_TENANT_ROLES';
     const EXTERNAL_ID = 'WPCS_TENANT_EXTERNAL_ID';
+    const API_V1_NAMESPACE = 'monday-client/v1';
+    const PLUGIN_NAME = 'monday-client/index.php';
+    const PLUGIN_VERSION = '1.0.0';
 
     public function __construct()
     {

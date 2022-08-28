@@ -33,7 +33,7 @@ class RolesManager
 
         activate_plugins($enabled_plugins);
 
-        $disabled_plugins = array_filter($disabled_plugins, fn($item) => $item !== PLUGIN_NAME);
+        $disabled_plugins = array_filter($disabled_plugins, fn($item) => $item !== PluginBootstrap::PLUGIN_NAME);
         deactivate_plugins($disabled_plugins);
     }
 }

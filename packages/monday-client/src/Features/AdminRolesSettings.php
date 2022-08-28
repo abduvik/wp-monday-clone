@@ -22,12 +22,16 @@ class AdminRolesSettings
 
     public function add_admin_settings_styles()
     {
-        wp_enqueue_style('wpcs-admin-styles', PLUGIN_DIR_URI . '/assets/style.css', null, PLUGIN_VERSION);
-        wp_enqueue_script('wpcs-admin-scripts', PLUGIN_DIR_URI . '/assets/scripts.js', null, PLUGIN_VERSION);
+        wp_enqueue_style('wpcs-admin-styles', PLUGIN_DIR_URI . '/assets/style.css', null, PluginBootstrap::PLUGIN_VERSION);
+        wp_enqueue_script('wpcs-admin-scripts', PLUGIN_DIR_URI . '/assets/scripts.js', null, PluginBootstrap::PLUGIN_VERSION);
     }
 
     public function add_roles_page()
     {
+        if (get_option(PluginBootstrap::EXTERNAL_ID, '') !== '') {
+            return;
+        }
+        
         add_submenu_page(
             'wpcs-admin-tenant',
             'Roles',
@@ -41,7 +45,11 @@ class AdminRolesSettings
 
     public function render_roles_page()
     {
-        $wp_plugins = array_filter(get_plugins(), fn($item) => $item !== PLUGIN_NAME);
+        $wp_plugins = get_plugins();
+        if (isset($wp_plugins[PluginBootstrap::PLUGIN_NAME])) {
+            unset($wp_plugins[PluginBootstrap::PLUGIN_NAME]);
+        }
+
         $this->ensure_roles_file_exists();
 
         $roles = json_decode(file_get_contents(self::ROLES_FILE_PATH), true);
@@ -50,15 +58,14 @@ class AdminRolesSettings
         <h1>Roles</h1>
 
         <form action="<?= admin_url('admin-post.php') ?>" method="post">
-            <? wp_nonce_field('monday_add_new_role', 'add_new_role_nonce'); ?>
+            <?php wp_nonce_field('monday_add_new_role', 'add_new_role_nonce'); ?>
             <input type="hidden" name="action" value="monday_add_new_role">
-
             <input name="role" type='text' placeholder='New role name'/>
             <button type="submit" class='button-secondary'>Add new role</button>
         </form>
 
         <form action="<?= admin_url('admin-post.php') ?>" method="post" id="manage_plugins_roles">
-            <? wp_nonce_field('save_roles', 'save_roles_nonce'); ?>
+            <?php wp_nonce_field('save_roles', 'save_roles_nonce'); ?>
             <input type="hidden" name="action" value="save_roles">
 
             <div class="wpcs roles-container">
@@ -104,7 +111,10 @@ class AdminRolesSettings
 
     public function add_new_role()
     {
-        if (!wp_verify_nonce($_POST['add_new_role_nonce'], 'monday_add_new_role')) return;
+        if (!wp_verify_nonce($_POST['add_new_role_nonce'], 'monday_add_new_role')) {
+            wp_redirect(wp_get_referer());
+            return;
+        }
 
         $this->ensure_roles_file_exists();
         $data = json_decode(file_get_contents(self::ROLES_FILE_PATH), true);
@@ -135,8 +145,10 @@ class AdminRolesSettings
 
     public function save_roles()
     {
-        if (!wp_verify_nonce($_POST['save_roles_nonce'], 'save_roles')) return;
-        if (!isset($_POST['roles'])) wp_redirect(wp_get_referer());
+        if (!wp_verify_nonce($_POST['save_roles_nonce'], 'save_roles') || !isset($_POST['roles'])) {
+            wp_redirect(wp_get_referer());
+            return;
+        }
 
         $this->ensure_roles_file_exists();
 

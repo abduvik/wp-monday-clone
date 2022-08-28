@@ -23,10 +23,6 @@ use MondayCloneClient\Features\SecureHostConnectionManager;
 use MondayCloneClient\Features\AdminTenantSettings;
 
 
-const PLUGIN_VERSION = '1.0.0';
-const API_V1_NAMESPACE = 'monday-client/v1';
-const PLUGIN_NAME = 'monday-client/index.php';
-
 define("PLUGIN_DIR_URI", plugin_dir_url(__FILE__));
 define("PLUGIN_DIR", plugin_dir_path(__FILE__));
 

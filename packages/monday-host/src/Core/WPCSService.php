@@ -30,12 +30,11 @@ class WPCSService
     public function create_tenant($args)
     {
         $payload = [
-            'versionId' => $args['version_id'],
             'name' => $args['name'],
-            'tenantName' => $args['tenant_name'],
-            'tenantEmail' => $args['tenant_email'],
-            'tenantPassword' => $args['tenant_password'],
-            'tenantUserRole' => $args['tenant_user_role']
+            'wordPressUserName' => $args['wordpress_username'],
+            'wordPressUserEmail' => $args['wordpress_email'],
+            'wordPressUserPassword' => $args['wordpress_password'],
+            'wordPressUserRole' => $args['wordpress_user_role']
         ];
 
         if (isset($args['custom_domain_name'])) {

@@ -55,7 +55,7 @@ class PluginBootstrap
 
         $product_categories = wc_get_product_terms($item->get_product_id(), 'product_cat');
         foreach ($product_categories as $product_category) {
-            if ($product_category->slug === 'add-on') {
+            if ($product_category->slug !== 'add-on') {
                 return false;
             }
         }

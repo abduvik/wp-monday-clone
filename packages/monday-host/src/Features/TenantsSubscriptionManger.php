@@ -40,10 +40,10 @@ class TenantsSubscriptionManger
 
             $args = [
                 'name' => $website_name,
-                'tenant_name' => $order->get_formatted_billing_full_name(),
-                'tenant_email' => $order->get_billing_email(),
-                'tenant_password' => $password,
-                'tenant_user_role' => 'administrator',
+                'wordpress_username' => sanitize_title_with_dashes($order->get_formatted_billing_full_name()),
+                'wordpress_email' => $order->get_billing_email(),
+                'wordpress_password' => $password,
+                'wordpress_user_role' => 'administrator',
             ];
 
             if ($domain_name !== '') {

@@ -12,6 +12,10 @@ class AdminTenantSettings
 
     public function add_wpcs_admin_page()
     {
+        if (get_option(PluginBootstrap::EXTERNAL_ID, '') !== '') {
+            return;
+        }
+        
         add_menu_page(
             'Tenant Settings',
             'Tenant Settings',

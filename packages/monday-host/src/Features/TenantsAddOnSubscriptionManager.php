@@ -26,11 +26,16 @@ class TenantsAddOnSubscriptionManager
 
         try {
             $tenant_base_domain = $subscription->get_meta(WPCSTenant::WPCS_BASE_DOMAIN_NAME_META);
+            if (strpos($tenant_base_domain, 'http') !== 0) {
+                $tenant_base_domain = 'https://' . $tenant_base_domain;
+            }
+
             $http_service = new HttpService($tenant_base_domain);
             $http_service->get('/wp-json/monday-client/v1/user-role-plan/fetch-updated-list');
 
         } catch (\Exception $error) {
             error_log('Failed to update roles list for tenant');
+            error_log($error);
         }
     }
 
@@ -51,11 +56,16 @@ class TenantsAddOnSubscriptionManager
 
         try {
             $tenant_base_domain = $subscription->get_meta(WPCSTenant::WPCS_BASE_DOMAIN_NAME_META);
+            if (strpos($tenant_base_domain, 'http') !== 0) {
+                $tenant_base_domain = 'https://' . $tenant_base_domain;
+            }
+
             $http_service = new HttpService($tenant_base_domain);
             $http_service->get('/wp-json/monday-client/v1/user-role-plan/fetch-updated-list');
 
         } catch (\Exception $error) {
             error_log('Failed to update roles list for tenant');
+            error_log($error);
         }
     }
 }

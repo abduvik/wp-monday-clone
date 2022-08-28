@@ -18,7 +18,7 @@ class RolesController
 
     public function register_rest_routes()
     {
-        register_rest_route(API_V1_NAMESPACE, '/user-role-plan/fetch-updated-list', [
+        register_rest_route(PluginBootstrap::API_V1_NAMESPACE, '/user-role-plan/fetch-updated-list', [
             'methods' => 'GET',
             'callback' => [$this, 'fetch_update_user_role_list'],
         ]);

@@ -3,6 +3,7 @@
 namespace MondayCloneClient\Api;
 
 use MondayCloneClient\Core\DecryptionService;
+use MondayCloneClient\Features\PluginBootstrap;
 use WP_Error;
 use WP_REST_Request;
 
@@ -19,7 +20,7 @@ class SingleSignOnController
 
     public function register_rest_routes()
     {
-        register_rest_route(API_V1_NAMESPACE, '/single_login/verify', array(
+        register_rest_route(PluginBootstrap::API_V1_NAMESPACE, '/single_login/verify', array(
             'methods' => 'GET',
             'callback' => [$this, 'verify_single_login'],
         ));
