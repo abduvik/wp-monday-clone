@@ -31,10 +31,11 @@ class SingleLogin
 
     public function guard_generate_single_login_link(WP_REST_Request $request)
     {
-        $subscription_id = $request->get_param('subscription_id');
+
+        $subscription_id = sanitize_text_field($request->get_param('subscription_id'));
+        $subscription = new \WC_Subscription($subscription_id);
         $login_email = $request->get_param('email');
-        $get_order_id = get_post_meta($subscription_id, 'wps_parent_order', true);
-        $order = new WC_Order($get_order_id);
+        $order = $subscription->get_parent();
         $order_email = $order->get_billing_email();
 
         return $login_email === $order_email;
@@ -58,7 +59,7 @@ class SingleLogin
 
         $token = $this->encryptionService->encrypt($private_key, json_encode($login_data));
         $token_encoded = urlencode(base64_encode($token));
-        $loginLink = 'https://' . $domain . "/wp-json/wpcs/v1/single_login/verify?token=" . $token_encoded;
+        $loginLink = 'https://' . $domain . "/wp-json/monday-client/v1/single_login/verify?token=" . $token_encoded;
 
         wp_redirect($loginLink);
         exit();
