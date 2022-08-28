@@ -11,6 +11,22 @@ class WPCSService
         $this->httpService = $httpService;
     }
 
+    /**
+     * @throws \Exception
+     */
+    public function get_production_version()
+    {
+        $versions = $this->httpService->get('/v1/versions');
+
+        foreach ($versions as $version) {
+            if ($version->isProduction === true) {
+                return $version;
+            }
+        }
+
+        throw new \Exception('Failed to find any version');
+    }
+
     public function create_tenant($args)
     {
         $payload = [

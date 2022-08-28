@@ -3,19 +3,26 @@
 namespace MondayCloneHost\Api;
 
 use MondayCloneHost\Core\HttpService;
+use MondayCloneHost\Core\WPCSService;
 use MondayCloneHost\Core\WPCSTenant;
 use MondayCloneHost\Features\PluginBootstrap;
 use PhpParser\Error;
 
 class RolesController
 {
-    public function __construct()
+    private WPCSService $wpcsService;
+
+    public function __construct(WPCSService $wpcsService)
     {
+        $this->wpcsService = $wpcsService;
+
         add_action('rest_api_init', [$this, 'register_rest_routes']);
     }
 
     public function register_rest_routes()
     {
+
+
         register_rest_route(PluginBootstrap::API_V1_NAMESPACE, '/user-role-plan/update', [
             'methods' => 'GET',
             'permission_callback' => '__return_true',
@@ -32,9 +39,9 @@ class RolesController
     public function update_user_roles_list(): \WP_REST_Response
     {
         try {
-            $wpcs_version_server = "http://wordpress-client"; // @todo: to use wpcs version w/ production instead
+            $wpcs_production_version = $this->wpcsService->get_production_version();
 
-            $http_service = new HttpService($wpcs_version_server);
+            $http_service = new HttpService($wpcs_production_version->domain);
 
             $response = $http_service->get('/wp-content/plugins/monday-client/data/roles.json');
 

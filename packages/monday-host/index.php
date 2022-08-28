@@ -38,7 +38,7 @@ define('WPCS_API_SECRET', get_option('wpcs_credentials_api_secret_setting')); //
 $wpcs_http_service = new HttpService('https://api.' . WPCS_API_REGION . '.wpcs.io', WPCS_API_KEY . ":" . WPCS_API_SECRET);
 $wpcsService = new WPCSService($wpcs_http_service);
 $encryptionService = new EncryptionService();
-new RolesController();
+new RolesController($wpcsService);
 
 // Managers to list for Events
 
