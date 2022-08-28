@@ -58,6 +58,7 @@ class TenantsSubscriptionManger
             update_post_meta($subscription->get_id(), WPCSTenant::WPCS_DOMAIN_NAME_META, $domain_name);
             update_post_meta($subscription->get_id(), WPCSTenant::WPCS_BASE_DOMAIN_NAME_META, $new_tenant->baseDomain);
             update_post_meta($subscription->get_id(), WPCSTenant::WPCS_TENANT_PRIVATE_KEY_META, $keys['private_key']);
+            update_post_meta($subscription->get_id(), WPCSTenant::WPCS_SUBSCRIPTION_USER_ROLES, [$product_role]);
 
             $this->send_created_email([
                 'email' => $order->get_billing_email(),
@@ -66,6 +67,7 @@ class TenantsSubscriptionManger
             ]);
 
         } catch (Exception $e) {
+            print_r($e); // @todo: Remove this
             throw new Exception('Failed to create tenant');
         }
     }
