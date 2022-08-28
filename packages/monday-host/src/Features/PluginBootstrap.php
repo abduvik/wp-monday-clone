@@ -13,6 +13,7 @@ class PluginBootstrap
         add_filter('ssd_add_product_link', [$this, 'rename_add_new_product_to_add_new_subscription']);
         add_filter('ssd_product_query_args', [$this, 'only_show_addons_when_adding_ons'], 10, 1);
         add_filter('wcs_can_item_be_removed', [$this, 'only_addons_can_be_removed_from_subscription'], 10, 2);
+        add_filter('http_request_timeout', [$this, 'increase_curl_timeout'], 10, 1);
     }
 
     function hide_addon_products_from_shop_page($q)
@@ -60,5 +61,10 @@ class PluginBootstrap
             }
         }
         return $can_show;
+    }
+
+    public function increase_curl_timeout($timeout): int
+    {
+        return 20;
     }
 }

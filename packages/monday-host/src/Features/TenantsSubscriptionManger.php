@@ -20,9 +20,7 @@ class TenantsSubscriptionManger
 
         add_action('woocommerce_checkout_subscription_created', [$this, 'create_tenant_when_subscription_created'], 10, 2);
 
-        // @todo: This can be exchanged for the demo
         add_action('woocommerce_subscription_status_cancelled', [$this, 'remove_tenant_when_subscription_expired']);
-//        add_action('woocommerce_subscription_status_expired', [$this, 'remove_tenant_when_subscription_expired']);
     }
 
     /**
@@ -50,7 +48,6 @@ class TenantsSubscriptionManger
         }
 
         $new_tenant = $this->wpcsService->create_tenant($args);
-        error_log($new_tenant); // @todo: need to be removed
         $keys = $this->encryptionService->generate_key_pair();
 
         update_post_meta($subscription->get_id(), WPCSTenant::WPCS_TENANT_EXTERNAL_ID_META, $new_tenant->externalId);
@@ -86,6 +83,7 @@ class TenantsSubscriptionManger
     public function remove_tenant_when_subscription_expired(\WC_Subscription $subscription)
     {
         $tenant_external_id = get_post_meta($subscription->get_id(), WPCSTenant::WPCS_TENANT_EXTERNAL_ID_META, true);
+        error_log($tenant_external_id);
         $this->wpcsService->delete_tenant([
             'external_id' => $tenant_external_id
         ]);

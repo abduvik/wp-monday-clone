@@ -15,9 +15,10 @@ class UserAccountSubscriptionsSettings
     {
         $this->wpcsService = $wpcsService;
 
-        add_action('woocommerce_subscription_details_table', [$this, 'render_single_login'], 1, 25);
-        add_action('woocommerce_subscription_details_table', [$this, 'render_edit_domain'], 1, 30);
+        add_action('woocommerce_subscription_details_table', [$this, 'render_single_login'], 10, 1);
+        add_action('woocommerce_subscription_details_table', [$this, 'render_edit_domain'], 10, 1);
         add_action('remove_tenant_old_domain', [$this, 'remove_tenant_old_domain'], 1, 2);
+        add_filter('wcs_view_subscription_actions', [$this, 'remove_subscription_actions'], 10, 1);
     }
 
     public function render_single_login(\WC_Subscription $subscription)
@@ -93,5 +94,14 @@ class UserAccountSubscriptionsSettings
             'external_id' => $external_id,
             'old_domain_name' => $old_domain_name,
         ]);
+    }
+
+    public function remove_subscription_actions($actions)
+    {
+        if (isset($actions['resubscribe'])) {
+            unset($actions['resubscribe']);
+        }
+        
+        return $actions;
     }
 }
