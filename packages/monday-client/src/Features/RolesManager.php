@@ -11,7 +11,13 @@ class RolesManager
 
     public function activate_enabled_plugins(): void
     {
-        // @todo: we need to differ between tenant and version websites because owner can define plugins and so on but it shouldn't be disabled
+        $external_id = get_option(PluginBootstrap::EXTERNAL_ID, '');
+
+        if ($external_id === '') {
+            // This is a WPCS version and not a tenant
+            return;
+        }
+
         $roles_plugins = json_decode(file_get_contents(AdminRolesSettings::ROLES_FILE_PATH), true);
         $user_roles = get_option(PluginBootstrap::TENANT_ROLES, []);
 

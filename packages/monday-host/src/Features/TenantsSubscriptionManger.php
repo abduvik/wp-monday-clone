@@ -67,7 +67,6 @@ class TenantsSubscriptionManger
             ]);
 
         } catch (Exception $e) {
-            print_r($e); // @todo: Remove this
             throw new Exception('Failed to create tenant');
         }
     }

@@ -29,10 +29,6 @@ Version: 1.0.0
 Author URI: https://www.abdu.dev
 */
 
-// @todo: put constants under a class or something
-
-const API_V1_NAMESPACE = 'monday-host/v1';
-
 define('WPCS_API_REGION', get_option('wpcs_credentials_region_setting')); // Or eu1, depending on your region.
 define('WPCS_API_KEY', get_option('wpcs_credentials_api_key_setting')); // The API Key you retrieved from the console
 define('WPCS_API_SECRET', get_option('wpcs_credentials_api_secret_setting')); // The API Secret you retrieved from the console

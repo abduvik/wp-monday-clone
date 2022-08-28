@@ -16,13 +16,13 @@ class RolesController
 
     public function register_rest_routes()
     {
-        register_rest_route(API_V1_NAMESPACE, '/user-role-plan/update', [
+        register_rest_route(PluginBootstrap::API_V1_NAMESPACE, '/user-role-plan/update', [
             'methods' => 'GET',
             'permission_callback' => '__return_true',
             'callback' => [$this, 'update_user_roles_list'],
         ]);
 
-        register_rest_route(API_V1_NAMESPACE, '/user-role-plan/tenant', [
+        register_rest_route(PluginBootstrap::API_V1_NAMESPACE, '/user-role-plan/tenant', [
             'methods' => 'GET',
             'permission_callback' => '__return_true',
             'callback' => [$this, 'get_tenant_user_roles'],
