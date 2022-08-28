@@ -127,7 +127,7 @@ class AdminRolesSettings
     private function update_host_roles()
     {
         try {
-            $this->host_http_service->get('/v1/user-role-plan/update');
+            $this->host_http_service->get('/user-role-plan/update');
         } catch (\Exception $exception) {
 
         }

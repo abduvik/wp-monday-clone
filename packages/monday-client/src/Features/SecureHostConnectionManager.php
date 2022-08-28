@@ -18,7 +18,7 @@ class SecureHostConnectionManager
 
     public function get_tenant_public_id($external_id)
     {
-        $response = $this->httpService->get('/v1/tenant/public_keys?external_id=' . $external_id);
+        $response = $this->httpService->get('/tenant/public_keys?external_id=' . $external_id);
 
         $public_key = $response->public_key;
 

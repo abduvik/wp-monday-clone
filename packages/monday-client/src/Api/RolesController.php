@@ -2,36 +2,38 @@
 
 namespace MondayCloneClient\Api;
 
-use MondayCloneClient\Core\DecryptionService;
+use MondayCloneClient\Core\HttpService;
+use MondayCloneClient\Features\PluginBootstrap;
 
 class RolesController
 {
-    private DecryptionService $decryptionService;
+    private HttpService $httpService;
 
-    public function __construct(DecryptionService $decryptionService)
+    public function __construct(HttpService $httpService)
     {
-        $this->decryptionService = $decryptionService;
+        $this->httpService = $httpService;
 
         add_action('rest_api_init', [$this, 'register_rest_routes']);
+    }
 
-        register_rest_route(API_V1_NAMESPACE, '/user-role-plan', [
-            'methods' => 'POST',
-            'callback' => [$this, 'verify_single_login'],
+    public function register_rest_routes()
+    {
+        register_rest_route(API_V1_NAMESPACE, '/user-role-plan/fetch-updated-list', [
+            'methods' => 'GET',
+            'callback' => [$this, 'fetch_update_user_role_list'],
         ]);
-
-        register_rest_route(API_V1_NAMESPACE, '/user-role-plan', array(
-            'methods' => 'POST',
-            'callback' => [$this, 'verify_single_login'],
-        ));
-
     }
 
-    public function add_user_role()
+    public function fetch_update_user_role_list(): \WP_REST_Response
     {
-    }
+        try {
+            $externalId = get_option(PluginBootstrap::EXTERNAL_ID);
+            $roles = $this->httpService->get('/user-role-plan/tenant?externalId=' . $externalId);
+            update_option(PluginBootstrap::TENANT_ROLES, $roles);
 
-    public function remove_user_role()
-    {
-
+            return new \WP_REST_Response(true, 200);
+        } catch (\Exception $e) {
+            return new \WP_REST_Response(false, 500);
+        }
     }
 }

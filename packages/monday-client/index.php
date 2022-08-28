@@ -12,6 +12,7 @@ Version: 1.0.1
 Author URI: https://www.abdu.dev
 */
 
+use MondayCloneClient\Api\RolesController;
 use MondayCloneClient\Api\SingleSignOnController;
 use MondayCloneClient\Core\DecryptionService;
 use MondayCloneClient\Core\HttpService;
@@ -36,9 +37,10 @@ define('MONDAY_HOST_PUBLIC_KEYS', get_option('tenant_public_key'));
 new PluginBootstrap();
 
 // Controllers to list for APIs
-$host_http_service = new HttpService(MONDAY_MAIN_HOST_URL . '/wp-json/monday-host');
+$host_http_service = new HttpService(MONDAY_MAIN_HOST_URL . '/wp-json/monday-host/v1');
 $decryptionService = new DecryptionService();
 new SingleSignOnController($decryptionService);
+new RolesController($host_http_service);
 
 // Managers to list for Events
 new SecureHostConnectionManager($host_http_service);

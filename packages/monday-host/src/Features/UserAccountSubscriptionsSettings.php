@@ -22,6 +22,8 @@ class UserAccountSubscriptionsSettings
 
     public function render_single_login(\WC_Subscription $subscription)
     {
+        print_r(get_post_meta($subscription->get_id(), WPCSTenant::WPCS_SUBSCRIPTION_USER_ROLES, true));
+
         $order = $subscription->get_parent();
         $email = $order->get_billing_email();
         $loginLink = '/wp-json/wpcs/v1/tenant/single_login?subscription_id=' . $subscription->get_id() . '&email=' . $email;

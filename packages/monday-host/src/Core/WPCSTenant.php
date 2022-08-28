@@ -53,4 +53,9 @@ class WPCSTenant
             'private_key' => $private_key,
         ];
     }
+
+    public function get_subscription_id()
+    {
+        return $this->subscription_id;
+    }
 }

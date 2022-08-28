@@ -13,7 +13,7 @@ class RolesManager
     {
         // @todo: we need to differ between tenant and version websites because owner can define plugins and so on but it shouldn't be disabled
         $roles_plugins = json_decode(file_get_contents(AdminRolesSettings::ROLES_FILE_PATH), true);
-        $user_roles = ['level-2', 'level-3', 'level-10'];
+        $user_roles = get_option(PluginBootstrap::TENANT_ROLES, []);
 
         $enabled_plugins = [];
         foreach ($user_roles as $user_role) {

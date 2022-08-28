@@ -3,6 +3,7 @@
 namespace MondayCloneHost\Api;
 
 use MondayCloneHost\Core\HttpService;
+use MondayCloneHost\Core\WPCSTenant;
 use MondayCloneHost\Features\PluginBootstrap;
 use PhpParser\Error;
 
@@ -20,6 +21,12 @@ class RolesController
             'permission_callback' => '__return_true',
             'callback' => [$this, 'update_user_roles_list'],
         ]);
+
+        register_rest_route(API_V1_NAMESPACE, '/user-role-plan/tenant', [
+            'methods' => 'GET',
+            'permission_callback' => '__return_true',
+            'callback' => [$this, 'get_tenant_user_roles'],
+        ]);
     }
 
     public function update_user_roles_list(): \WP_REST_Response
@@ -36,7 +43,16 @@ class RolesController
             return new \WP_REST_Response(true, 200);
 
         } catch (Error $error) {
-
+            return new \WP_REST_Response(false, 404);
         }
+    }
+
+    public function get_tenant_user_roles(\WP_REST_Request $request): \WP_REST_Response
+    {
+        $externalId = sanitize_text_field($request->get_param('externalId'));
+        $tenant = WPCSTenant::from_wpcs_external_id($externalId);
+        $subscription_id = $tenant->get_subscription_id();
+        $roles = get_post_meta($subscription_id, WPCSTenant::WPCS_SUBSCRIPTION_USER_ROLES, true);
+        return new \WP_REST_Response($roles, 200);
     }
 }
