@@ -1,10 +1,11 @@
 # Monday.com SaaS Clone using WordPress, WooCommerce, WPCS & k8s
 
-This is a Monday.com Clone build using various technologies to illustrate how easy it is to build SaaS products using WordPress
+This is a Monday.com Clone build using various technologies to illustrate how easy it is to build SaaS products using
+WordPress
 
-## [YouTube Video](http://www.youtube.com/watch?v=xxxxx)
+## [YouTube Video](http://www.youtube.com/watch?v=hqpPOjLvIig)
 
-[![Building Monday.com SaaS Clone using WordPress, WooCommerce, WPCS & k8s](http://img.youtube.com/vi/xxxxx/0.jpg)](http://www.youtube.com/watch?v=xxxxx "Building Monday.com SaaS Clone using WordPress, WooCommerce, WPCS & k8s")
+[![Building Monday.com SaaS Clone using WordPress, WooCommerce, WPCS & k8s](http://img.youtube.com/vi/hqpPOjLvIig/0.jpg)](http://www.youtube.com/watch?v=xxxxx "Building Monday.com SaaS Clone using WordPress, WooCommerce, WPCS & k8s")
 
 ## Local Development
 
