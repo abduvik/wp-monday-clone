@@ -37,7 +37,7 @@ class TenantsSubscriptionManger
 
         $args = [
             'name' => $website_name,
-            'wordpress_username' => sanitize_title_with_dashes($order->get_formatted_billing_full_name()),
+            'wordpress_username' => str_replace('-', '_', sanitize_title_with_dashes(remove_accents($order->get_formatted_billing_full_name()))),
             'wordpress_email' => $order->get_billing_email(),
             'wordpress_password' => $password,
             'wordpress_user_role' => 'administrator',
