@@ -13,8 +13,8 @@ class RolesManager
     {
         $external_id = get_option(PluginBootstrap::EXTERNAL_ID, '');
 
-        if ($external_id === '') {
-            // This is a WPCS version and not a tenant
+        if ($external_id === '' || !file_exists(AdminRolesSettings::ROLES_FILE_PATH)) {
+            // This is a WPCS version and not a tenant or plugin not yet setup
             return;
         }
 

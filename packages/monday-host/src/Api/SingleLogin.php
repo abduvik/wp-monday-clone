@@ -2,6 +2,7 @@
 
 namespace MondayCloneHost\Api;
 
+use MondayCloneHost\Features\PluginBootstrap;
 use WC_Order;
 use MondayCloneHost\Core\EncryptionService;
 use MondayCloneHost\Core\WPCSTenant;
@@ -9,8 +10,6 @@ use WP_REST_Request;
 
 class SingleLogin
 {
-    private static string $NAMESPACE = 'wpcs/v1';
-
     private EncryptionService $encryptionService;
 
     public function __construct(EncryptionService $encryptionService)
@@ -22,7 +21,7 @@ class SingleLogin
 
     public function register_rest_routes()
     {
-        register_rest_route(static::$NAMESPACE, '/tenant/single_login', array(
+        register_rest_route(PluginBootstrap::API_V1_NAMESPACE, '/tenant/single_login', array(
             'methods' => 'GET',
             'callback' => [$this, 'generate_single_login_link'],
             'permission_callback' => [$this, 'guard_generate_single_login_link']

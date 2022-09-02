@@ -25,7 +25,7 @@ Plugin Name: Monday-Clone Host
 Plugin URI: https://github.com/abduvik/wp-monday-clone
 Description: This plugin is used to create tenants on WPCS.io with support of WordPress, WooCommerce, WooCommerce Subscriptions and Self-service Dashboard for WooCommerce Subscriptions
 Author: Abdu Tawfik
-Version: 1.0.0
+Version: 2.0.0
 Author URI: https://www.abdu.dev
 */
 

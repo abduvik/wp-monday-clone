@@ -6,7 +6,8 @@ use MondayCloneClient\Core\HttpService;
 
 class AdminRolesSettings
 {
-    const ROLES_FILE_PATH = PLUGIN_DIR . 'data/roles.json';
+    const ROLES_FILE_DIR_PATH = WP_PLUGIN_DIR . '/monday-client-data/';
+    const ROLES_FILE_PATH = WP_PLUGIN_DIR . '/monday-client-data/roles.json';
 
     private HttpService $host_http_service;
 
@@ -22,8 +23,8 @@ class AdminRolesSettings
 
     public function add_admin_settings_styles()
     {
-        wp_enqueue_style('wpcs-admin-styles', PLUGIN_DIR_URI . '/assets/style.css', null, PluginBootstrap::PLUGIN_VERSION);
-        wp_enqueue_script('wpcs-admin-scripts', PLUGIN_DIR_URI . '/assets/scripts.js', null, PluginBootstrap::PLUGIN_VERSION);
+        wp_enqueue_style('wpcs-admin-styles', MONDAY_PLUGIN_DIR_URI . '/assets/style.css', null, PluginBootstrap::PLUGIN_VERSION);
+        wp_enqueue_script('wpcs-admin-scripts', MONDAY_PLUGIN_DIR_URI . '/assets/scripts.js', null, PluginBootstrap::PLUGIN_VERSION);
     }
 
     public function add_roles_page()
@@ -31,7 +32,7 @@ class AdminRolesSettings
         if (get_option(PluginBootstrap::EXTERNAL_ID, '') !== '') {
             return;
         }
-        
+
         add_submenu_page(
             'wpcs-admin-tenant',
             'Roles',
@@ -100,8 +101,8 @@ class AdminRolesSettings
 
     private function ensure_roles_file_exists(): void
     {
-        if (!file_exists(PLUGIN_DIR . 'data')) {
-            mkdir(PLUGIN_DIR . 'data', 0755, true);
+        if (!file_exists(self::ROLES_FILE_PATH)) {
+            mkdir(self::ROLES_FILE_DIR_PATH, 0755, true);
         }
 
         if (!file_exists(self::ROLES_FILE_PATH)) {

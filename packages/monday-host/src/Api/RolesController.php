@@ -48,7 +48,7 @@ class RolesController
 
             $http_service = new HttpService($wpcs_production_version_domain_name);
 
-            $response = $http_service->get('/wp-content/plugins/monday-client/data/roles.json');
+            $response = $http_service->get('/wp-content/plugins/monday-client-data/roles.json');
 
             update_option(PluginBootstrap::ROLES_WP_OPTION, $response);
 

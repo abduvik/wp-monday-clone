@@ -25,7 +25,7 @@ class UserAccountSubscriptionsSettings
     {
         $order = $subscription->get_parent();
         $email = $order->get_billing_email();
-        $loginLink = '/wp-json/wpcs/v1/tenant/single_login?subscription_id=' . $subscription->get_id() . '&email=' . $email;
+        $loginLink = '/wp-json/' . PluginBootstrap::API_V1_NAMESPACE . '/tenant/single_login?subscription_id=' . $subscription->get_id() . '&email=' . $email;
 
         echo "<a href='$loginLink' target='_blank' class='button'>Login as: $email <span class='dashicons dashicons-admin-network'></span></a>";
     }
@@ -101,7 +101,7 @@ class UserAccountSubscriptionsSettings
         if (isset($actions['resubscribe'])) {
             unset($actions['resubscribe']);
         }
-        
+
         return $actions;
     }
 }
